@@ -19,3 +19,44 @@ function setColors() {
   });
 }
 setColors();
+
+function generateJson() {
+  const input = textAreas;
+  let output = [];
+  let temp;
+
+  // loop through textareas and make arr
+  textAreas.each(function (i) {
+    temp = { value: input[i].value };
+    output.push(temp);
+  });
+
+  // save to local storage
+  localStorage.setItem("events", JSON.stringify(output));
+}
+
+function setEventsFromStorage() {
+  // set events to textareas
+  if (storedEvents !== null) {
+    textAreas.each(function (i) {
+      $(this).val(storedEvents[i].value);
+    });
+  } else {
+    generateJson();
+  }
+}
+setEventsFromStorage();
+
+function updateJsonHandler() {
+  // add click handler to all save btns
+  saveBtns.each(function (i) {
+    $(this).click(function () {
+      // update stored events array with updated value
+      storedEvents[i].value = textAreas[i].value;
+
+      // save to local storage
+      localStorage.setItem("events", JSON.stringify(storedEvents));
+    });
+  });
+}
+updateJsonHandler();
